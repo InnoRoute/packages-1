@@ -16,7 +16,7 @@ include $(INCLUDE_DIR)/kernel.mk
 #
 PKG_NAME:=openvswitch
 PKG_VERSION:=2.11.1
-PKG_RELEASE:=2
+PKG_RELEASE:=4
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=https://www.openvswitch.org/releases/
 PKG_HASH:=c1296ae44a7b176150915e33bc497cc0a7a02caeba84ea43ce9b6a2509d9b5dc
@@ -50,19 +50,21 @@ ovs_kmod_is_intree=$(filter %-intree,$(1))
 ovs_kmod_upstream_name=kmod-$(call ovs_kmod_package_name,$(patsubst %-intree,%,$(1)))
 ovs_kmod_package_provides=$(call ovs_kmod_upstream_name,$(1))
 define OvsKmodPackageTemplate
+ifeq ($(if $(call ovs_kmod_is_intree,$(1)),$(ovs_kmod_intree_not_supported)),)
   define KernelPackage/$(call ovs_kmod_package_name,$(1))
      SECTION:=kernel
      CATEGORY:=Kernel modules
      SUBMENU:=Network Support
      TITLE:=$(ovs_kmod_$(1)_title)
-     DEPENDS:=$(ovs_kmod_$(1)_depends) $(if $(call ovs_kmod_is_intree,$(1)),@DEVEL $(if $(ovs_kmod_intree_not_supported),@BROKEN))
+     DEPENDS:=$(ovs_kmod_$(1)_depends) $(if $(call ovs_kmod_is_intree,$(1)),@IPV6 @DEVEL)
      PROVIDES:=$(call ovs_kmod_package_provides,$(1))
      KCONFIG:=$(ovs_kmod_$(1)_kconfig)
      FILES:=$(ovs_kmod_$(1)_files)
-     AUTOLOAD:=$(call AutoProbe,$(foreach m,$(ovs_kmod_$(1)_files),$(patsubst %.ko,%,$(basename $(m)))))
+     AUTOLOAD:=$(call AutoProbe,$(foreach m,$(ovs_kmod_$(1)_files),$(notdir $(patsubst %.ko,%,$(basename $(m))))))
   endef
 
   ovs_kmod_packages+=$(call ovs_kmod_package_name,$(1))
+endif
 endef
 
 ovs_kmod_openvswitch_title:=Open vSwitch kernel datapath (upstream)
@@ -312,7 +314,11 @@ ovs_intree_kmod_configs:=CONFIG_PACKAGE_kmod-openvswitch-intree
 ovs_intree_kmod_enabled:=$(strip $(foreach c,$(ovs_intree_kmod_configs),$($(c))))
 PKG_CONFIG_DEPENDS+=$(ovs_intree_kmod_configs)
 ifneq ($(ovs_intree_kmod_enabled),)
-  CONFIGURE_ARGS += --with-linux=$(LINUX_DIR)
+  ifeq ($(ovs_kmod_intree_not_supported),)
+    CONFIGURE_ARGS += --with-linux=$(LINUX_DIR)
+  else
+    $(warning XXX: openvswitch: intree kmods selected but not supported)
+  endif
 endif
 
 TARGET_CFLAGS += -flto -std=gnu99
