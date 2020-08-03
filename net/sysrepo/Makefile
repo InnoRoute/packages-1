@@ -14,6 +14,7 @@ PKG_NAME:=sysrepo
 PKG_VERSION:=0.7.7
 PKG_RELEASE:=4
 
+
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=https://codeload.github.com/sysrepo/sysrepo/tar.gz/v$(PKG_VERSION)?
 PKG_HASH:=2bf8cb4d810d19231eba1e549f58f3a0ce068d170a5e7b212b927396098560e4
