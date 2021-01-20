@@ -1,12 +1,12 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=syncthing
-PKG_VERSION:=1.6.1
-PKG_RELEASE:=2
+PKG_VERSION:=1.12.1
+PKG_RELEASE:=0
 
 PKG_SOURCE:=syncthing-source-v$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=https://github.com/syncthing/syncthing/releases/download/v$(PKG_VERSION)
-PKG_HASH:=f42518d453f7475022b5632420f21a6e0ab8d77f19c29b65ad582bc98e00a0a5
+PKG_HASH:=f636441137650316b83809c177efb4df73be024547e056ea03dcf0ed627d81c7
 
 PKG_BUILD_DIR=$(BUILD_DIR)/$(PKG_NAME)-$(PKG_VERSION)/$(PKG_NAME)
 
@@ -40,7 +40,7 @@ define Package/syncthing
   DEPENDS:=$(GO_ARCH_DEPENDS)
   SECTION:=utils
   CATEGORY:=Utilities
-  USERID:=syncthing:syncthing
+  USERID:=syncthing=499:syncthing=499
 endef
 
 define Package/syncthing/conffiles

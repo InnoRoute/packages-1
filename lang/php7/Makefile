@@ -6,7 +6,7 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=php
-PKG_VERSION:=7.4.9
+PKG_VERSION:=7.4.14
 PKG_RELEASE:=1
 
 PKG_MAINTAINER:=Michael Heimpold <mhei@heimpold.de>
@@ -16,7 +16,7 @@ PKG_CPE_ID:=cpe:/a:php:php
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.xz
 PKG_SOURCE_URL:=http://www.php.net/distributions/
-PKG_HASH:=23733f4a608ad1bebdcecf0138ebc5fd57cf20d6e0915f98a9444c3f747dc57b
+PKG_HASH:=f9f3c37969fcd9006c1dbb1dd76ab53f28c698a1646fa2dde8547c3f45e02886
 
 PKG_BUILD_PARALLEL:=1
 PKG_USE_MIPS16:=0
@@ -257,9 +257,9 @@ endif
 
 ifneq ($(SDK)$(CONFIG_PACKAGE_php7-mod-imap),)
   CONFIGURE_ARGS+= \
-		--with-imap=shared,"$(STAGING_DIR)/usr" \
-		--with-kerberos=no \
-		--with-imap-ssl="$(STAGING_DIR)/usr"
+	--with-imap=shared,"$(STAGING_DIR)/usr" \
+	--with-kerberos=no \
+	--with-imap-ssl="$(STAGING_DIR)/usr"
 else
   CONFIGURE_ARGS+= --without-imap
 endif

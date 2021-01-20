@@ -8,12 +8,12 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=modemmanager
-PKG_VERSION:=1.14.2
+PKG_VERSION:=1.14.10
 PKG_RELEASE:=1
 
 PKG_SOURCE:=ModemManager-$(PKG_VERSION).tar.xz
 PKG_SOURCE_URL:=https://www.freedesktop.org/software/ModemManager
-PKG_HASH:=5fb5553aecd6eb9d6d8ecd130a24f3461e5f93c5f91a0e4ae0508b5228e8b0be
+PKG_HASH:=4ea60b375a761e17e7bb095bca894579ed0e8e33b273dc698b5cbe03947f357f
 PKG_BUILD_DIR:=$(BUILD_DIR)/ModemManager-$(PKG_VERSION)
 
 PKG_MAINTAINER:=Nicholas Smith <nicholas.smith@telcoantennas.com.au>
@@ -22,7 +22,6 @@ PKG_LICENSE_FILES:=COPYING
 
 PKG_INSTALL:=1
 PKG_BUILD_PARALLEL:=1
-PKG_BUILD_DEPENDS:=libxslt/host
 
 include $(INCLUDE_DIR)/package.mk
 include $(INCLUDE_DIR)/nls.mk
@@ -57,6 +56,10 @@ CONFIGURE_ARGS += \
 	--without-systemdsystemunitdir \
 	--disable-rpath \
 	--disable-gtk-doc
+
+ifeq ($(CONFIG_MODEMMANAGER_WITH_AT_COMMAND_VIA_DBUS),y)
+  CONFIGURE_ARGS += --with-at-command-via-dbus
+endif
 
 ifdef CONFIG_MODEMMANAGER_WITH_MBIM
   CONFIGURE_ARGS += --with-mbim
