@@ -40,7 +40,7 @@ define Package/python3-packages
   SECTION:=lang
   CATEGORY:=Languages
   TITLE:=A dummy package for packaging python3 modules with pip
-  DEPENDS:=@DEVEL +python3
+  DEPENDS:=@DEVEL +python3 +libstdcpp
 endef
 
 define Package/python3-packages/config
@@ -131,4 +131,4 @@ define Package/python3-packages/extra_provides
 	echo $(CONFIG_PACKAGE_python3-packages-extra-deps) | tr ' ' '\n'
 endef
 
-$(eval $(call BuildPackage,python3-packages))
+$(eval $(call BuildPackage,python3-packages,+libstdcpp))
